@@ -6,7 +6,7 @@ class Entity():
     def get_context_length(self):
         raise Exception('get_context_length not implemented')
     
-    def print_title(self):ßß
+    def print_title(self):
         print(self.title)
 
 
