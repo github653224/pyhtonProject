@@ -21,6 +21,7 @@ class Solution:
         text = text.lower()
         # 通过空格进行分割为列表
         word_list = text.split(' ')
+        print(word_list)
         # 过滤去掉列表中所有空格的元素
         word_list = filter(None, word_list)
         # 再次转换为无空格的列表
