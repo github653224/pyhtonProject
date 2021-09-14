@@ -1,3 +1,6 @@
+import re
+
+
 class SearchEngineBase(object):
     def __init__(self):
         pass
@@ -25,22 +28,41 @@ def main(search_engine):
             print(result)
 
 
-class SimpleEngine(SearchEngineBase):
+class BOWEngine(SearchEngineBase):
     def __init__(self):
-        super(SimpleEngine, self).__init__()
-        self.__id_to_texts = {}
+        super(BOWEngine, self).__init__()
+        self.__id_to_words = {}
     
     def process_corpus(self, id, text):
-        self.__id_to_texts[id] = text
+        self.__id_to_words[id] = self.parse_text_to_words(text)
     
     def search(self, query):
+        query_words = self.parse_text_to_words(query)
         results = []
-        for id, text in self.__id_to_texts.items():
-            if query in text:
+        for id, words in self.__id_to_words.items():
+            if self.query_match(query_words, words):
                 results.append(id)
         return results
+    
+    @staticmethod
+    def query_match(query_words, words):
+        for query_word in query_words:
+            if query_word not in words:
+                return False
+            return True
+    
+    @staticmethod
+    def parse_text_to_words(text):
+        # 使用正则表达式去除标点符号和换行符
+        text = re.sub(r'[^\w]', ' ', text)
+        # 转为小写
+        text = text.lower()
+        # 生成所有单词的列表
+        word_list = text.split(' ')
+        word_list = filter(None, word_list)
+        return set(word_list)
 
 
 if __name__ == "__main__":
-    search_engine = SimpleEngine()
+    search_engine = BOWEngine()
     main(search_engine)
