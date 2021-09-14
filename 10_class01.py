@@ -1,16 +1,5 @@
-class Entity():
-    def __init__(self, object_type) -> None:
-        print('parent class init called')
-        self.object_type = object_type
-
-    def get_context_length(self):
-        raise Exception('get_context_length not implemented')
-    
-    def print_title(self):
-        print(self.title)
-
-
-class Document(Entity):
+class Document():
+    # 常量大写且写在类变量里面，其他任何成员函数都能访问
     WELCOME_STR = 'welcome! The context for this book is {}.'
     def __init__(self, title, author, context):
         print('init fuction called')
@@ -38,5 +27,6 @@ class Document(Entity):
 
 if __name__ == "__main__":
     empty_book = Document.create_empty_book('this is title', 'panxueyan')
+    
     print(empty_book.get_context_length())
     print(empty_book.get_welcome('harry boter'))

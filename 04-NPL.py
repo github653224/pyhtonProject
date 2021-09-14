@@ -9,9 +9,10 @@ class Solution:
     3. 合并相同的词，统计每个词出现的频率，并按照词频从大到小排序；
     4. 将结果按行输出到文件 out
     """
-    def __init__(self) -> None:
+    def __init__(self, text_file) -> None:
         self.lst = list()
         self.tmp_dict = dict()
+        self.text_file_path = text_file
     
     def get_word_count(self, text):
         # 通过re正则子串替换字符串中所有非英文字母数字和换行空白（即把换行和标点符号全部使用空格代替）
@@ -42,23 +43,34 @@ class Solution:
             text = f.read()
             return text
 
-    def write_word_count_into_file(self, in_file_path, out_file_path):
-        text = self.read_text_file(in_file_path)
-        word_count_list = self.get_word_count(text)
+    def write_word_count_into_file(self, text, out_file_path):
+        if not os.path.exists(out_file_path):
+            os.makedirs(out_file_path)
+        try:
+            word_count_list = self.get_word_count(text)
+            with open(out_file_path + os.sep + f'{out_file_path}.text', 'w') as f:
+                for word, req in word_count_list:
+                    f.write(f"{word} {req} \n")
+        except (FileExistsError, FileNotFoundError, IOError) as error:
+            print(error)
 
-        with open(out_file_path, 'w') as f:
-            for word, req in word_count_list:
-                f.write(f"{word} {req} \n")
-
-    def get_root_path(self):
+    @classmethod
+    def get_root_path(cls, text_file):
         root_path = os.path.dirname(__file__)
-        return root_path
+        file_path = root_path + os.sep + text_file
+        return cls(file_path)
+
 
 if __name__ == "__main__":
-    solution = Solution()
-    root_path = solution.get_root_path()
-    
-    in_file_path = root_path + os.sep + "in.text"
-    out_file_path = root_path + os.sep + "out.text"
+    solution = Solution.get_root_path('in/in.text')
+    text_content = solution.read_text_file(solution.text_file_path)
+    solution.write_word_count_into_file(text_content, 'out2')
 
-    solution.write_word_count_into_file(in_file_path, out_file_path)
+
+    # solution = Solution()
+    # root_path = solution.get_root_path()
+    
+    # in_file_path = root_path + os.sep + "in.text"
+    # out_file_path = root_path + os.sep + "out.text"
+
+    # solution.write_word_count_into_file(in_file_path, out_file_path)
