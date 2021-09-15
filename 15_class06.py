@@ -1,4 +1,5 @@
 import re
+import os
 
 
 class SearchEngineBase(object):
@@ -17,7 +18,8 @@ class SearchEngineBase(object):
         raise Exception('search not implemented.')
 
 def main(search_engine):
-    for file_path in ['./test_file/1.txt', './test_file/2.txt', './test_file/3.txt', './test_file/4.txt']:
+    file_list = ['./test_file/1.txt', './test_file/2.txt', './test_file/3.txt', './test_file/4.txt']
+    for file_path in search_engine.get_root_path(file_list):
         search_engine.add_corpus(file_path)
     
     while True:
@@ -45,6 +47,7 @@ class BOWInvertedIndexEngine(SearchEngineBase):
         query_words_index = list()
         for query_word in query_words:
             query_words_index.append(0)
+            print(f'query_words_index: {query_words_index}')
         for query_word in query_words:
             if query_word not in self.inverted_index:
                 return []
@@ -77,6 +80,15 @@ class BOWInvertedIndexEngine(SearchEngineBase):
         word_list = text.split(' ')
         word_list = filter(None, word_list)
         return set(word_list)
+
+    @staticmethod
+    def get_root_path(file_list):
+        # file_path_list = list()
+        root_path = os.path.dirname(__file__)
+        for file_name in file_list:
+            file_path = root_path + os.sep + file_name
+            yield file_path
+        
 
 if __name__ == "__main__":
     search_engine = BOWInvertedIndexEngine()
