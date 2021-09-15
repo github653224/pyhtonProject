@@ -14,7 +14,8 @@ class Document(Entity):
     WELCOME_STR = 'welcome! The context for this book is {}.'
     def __init__(self, title, author, context):
         print('init fuction called')
-        Entity.__init__(self, 'Document')
+        # Entity.__init__(self, 'Document')
+        super(Document, self).__init__('Document1')
         self.title = title
         self.author = author
         self.__ccontext = context
@@ -45,9 +46,9 @@ if __name__ == "__main__":
     print(harry_potter_book.object_type)
     print(harry_potter_video.object_type)
 
-    harry_potter_book.print_title()
-    harry_potter_video.print_title()
+    # harry_potter_book.print_title()
+    # harry_potter_video.print_title()
 
-    print(harry_potter_book.get_context_length())
-    print(harry_potter_video.get_context_length())
+    # print(harry_potter_book.get_context_length())
+    # print(harry_potter_video.get_context_length())
    
