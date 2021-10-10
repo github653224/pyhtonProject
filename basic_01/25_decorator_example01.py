@@ -11,6 +11,9 @@ def authenticate(func):
             raise Exception("Authentication failed")
     return wrapper
 
+def check_user_logged_in():
+    pass
+
 @authenticate
 def post_comment(request):
     pass
